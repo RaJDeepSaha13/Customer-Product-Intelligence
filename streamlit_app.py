@@ -51,245 +51,630 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
 
-:root {
---void: #05070d;
---glass: rgba(255,255,255,0.045);
---glass-hi: rgba(255,255,255,0.09);
---border: rgba(255,255,255,0.09);
---border-hi: rgba(255,255,255,0.22);
---blue: #3b82f6;
---magenta: #ec4899;
---amber: #f5b23c;
---emerald: #10e0a4;
---violet: #8b5cf6;
---cyan: #22d3ee;
---text-hi: #f8fafc;
---text-mid: #9aa4b2;
---text-low: #5c6675;
+:root{
+  --bg:#0b1220;
+  --bg2:#0f1728;
+  --card:#121b2c;
+  --card2:#162238;
+  --line:#26344d;
+  --line2:#34435e;
+  --text:#f4f7fb;
+  --text2:#c3cede;
+  --muted:#91a0b6;
+  --dim:#64738b;
+
+  --blue:#5b8cff;
+  --blue-soft:#182b54;
+  --violet:#9b7aff;
+  --violet-soft:#281f4e;
+  --green:#2bd7a0;
+  --green-soft:#103b32;
+  --red:#ff6b7f;
+  --red-soft:#421f2a;
+  --amber:#f4bd55;
+  --amber-soft:#42331b;
+  --cyan:#39d5ef;
 }
 
-html, body, [class*="css"] { font-family: 'Inter', -apple-system, sans-serif; }
-::selection { background: rgba(139,92,246,0.4); color: #fff; }
-
-@keyframes bgshift { 0% { background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%; } 100% { background-position: 6% 4%, 94% 6%, 4% 94%, 96% 96%; } }
-@keyframes spin { to { transform: rotate(360deg); } }
-@keyframes blink { 0%,100% {opacity:1;} 50% {opacity:0.35;} }
-@keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-
-/* aurora lives on the background property itself (not a positioned
-   overlay element) so it can never stack on top of real content */
-.stApp {
-background-color: var(--void);
-background-image:
-radial-gradient(600px 420px at 8% 5%, rgba(59,130,246,0.20), transparent 60%),
-radial-gradient(560px 420px at 92% 15%, rgba(236,72,153,0.16), transparent 60%),
-radial-gradient(620px 460px at 25% 95%, rgba(16,224,164,0.13), transparent 60%),
-radial-gradient(500px 400px at 80% 90%, rgba(139,92,246,0.15), transparent 60%);
-background-repeat: no-repeat;
-background-size: 120% 120%;
-animation: bgshift 24s ease-in-out infinite alternate;
-}
-@media (prefers-reduced-motion: reduce) { .stApp, .ring::before, .ticker-dot { animation: none !important; } }
-
-.main .block-container { max-width: 1180px; padding-top: 20px; padding-bottom: 110px; }
-#MainMenu, footer {visibility: hidden;}
-
-button:focus-visible { outline: 2px solid var(--violet) !important; outline-offset: 2px; }
-
-/* ---------- SIDEBAR ---------- */
-
-section[data-testid="stSidebar"] {
-background: linear-gradient(180deg, #07090f 0%, #05070c 100%);
-border-right: 1px solid var(--border);
-}
-section[data-testid="stSidebar"] .block-container { padding-top: 22px; }
-
-.sb-brand { display:flex; align-items:center; gap:11px; margin-bottom:3px; }
-.sb-brand-mark {
-width:36px; height:36px; border-radius:11px; flex-shrink:0;
-background: linear-gradient(135deg, var(--blue), var(--violet) 50%, var(--magenta));
-display:flex; align-items:center; justify-content:center;
-font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:15px; color:#fff;
-box-shadow: 0 0 18px rgba(139,92,246,0.55);
-}
-.sb-brand-name { font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:15px; color:var(--text-hi); line-height:1.15; }
-.sb-brand-sub { font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:1px; color:var(--text-low); margin-left:47px; margin-bottom:20px; text-transform:uppercase; }
-
-section[data-testid="stSidebar"] .stButton button {
-width:100%; border-radius:10px; border:1px solid transparent; background-color: var(--glass);
-color:#d7dce3; min-height:40px; font-family:'Inter',sans-serif; font-size:13.5px; font-weight:500;
-text-align:left; justify-content:flex-start; padding-left:12px;
-transition: all .18s cubic-bezier(.2,.8,.3,1.2);
-}
-section[data-testid="stSidebar"] .stButton button:hover { transform: translateX(3px) scale(1.015); background-color: var(--glass-hi); color:var(--text-hi); }
-section[data-testid="stSidebar"] .stButton button:active { transform: scale(0.98); }
-
-section[data-testid="stSidebar"] .stButton button[kind="primary"] {
-background: linear-gradient(90deg, var(--blue), var(--violet), var(--magenta), var(--blue));
-background-size: 300% 100%;
-animation: shimmer 6s linear infinite;
-color:#fff; font-weight:600; border:none;
-box-shadow: 0 6px 22px -4px rgba(139,92,246,0.65);
-}
-section[data-testid="stSidebar"] .stButton button[kind="primary"]:hover { transform: translateY(-1px) scale(1.02); box-shadow: 0 10px 30px -4px rgba(139,92,246,0.85); }
-
-.st-key-side_business button { border:1px solid rgba(59,130,246,0.35) !important; }
-.st-key-side_business button:hover { box-shadow: 0 6px 20px -6px rgba(59,130,246,0.55); border-color: var(--blue) !important; }
-.st-key-side_risk button { border:1px solid rgba(236,72,153,0.35) !important; }
-.st-key-side_risk button:hover { box-shadow: 0 6px 20px -6px rgba(236,72,153,0.55); border-color: var(--magenta) !important; }
-.st-key-side_profit button { border:1px solid rgba(245,178,60,0.35) !important; }
-.st-key-side_profit button:hover { box-shadow: 0 6px 20px -6px rgba(245,178,60,0.5); border-color: var(--amber) !important; }
-.st-key-side_retention button { border:1px solid rgba(16,224,164,0.35) !important; }
-.st-key-side_retention button:hover { box-shadow: 0 6px 20px -6px rgba(16,224,164,0.5); border-color: var(--emerald) !important; }
-.st-key-side_customer button { border:1px solid rgba(139,92,246,0.35) !important; }
-.st-key-side_customer button:hover { box-shadow: 0 6px 20px -6px rgba(139,92,246,0.55); border-color: var(--violet) !important; }
-.st-key-side_region button { border:1px solid rgba(34,211,238,0.35) !important; }
-.st-key-side_region button:hover { box-shadow: 0 6px 20px -6px rgba(34,211,238,0.5); border-color: var(--cyan) !important; }
-.st-key-side_subscription button { border:1px solid rgba(59,130,246,0.35) !important; }
-.st-key-side_subscription button:hover { box-shadow: 0 6px 20px -6px rgba(59,130,246,0.55); border-color: var(--blue) !important; }
-
-.sb-rule { height:1px; background: linear-gradient(90deg, transparent, var(--border-hi), transparent); margin:18px 0 16px 0; border:none; }
-
-.sb-label {
-color:var(--text-low); font-family:'JetBrains Mono',monospace; font-size:9.5px; font-weight:600;
-letter-spacing:1.6px; margin:14px 0 9px 2px; text-transform:uppercase;
+html,body,[class*="css"]{
+  font-family:'DM Sans',sans-serif;
 }
 
-.sb-stat {
-text-align:center; padding: 16px 10px; border-radius:14px; margin-top:4px;
-background: linear-gradient(160deg, rgba(59,130,246,0.14), rgba(236,72,153,0.08));
-border: 1px solid var(--border);
-}
-.sb-stat-num {
-font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:32px; line-height:1;
-background: linear-gradient(90deg, #fff, var(--cyan)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-}
-.sb-stat-label { font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:1.4px; color:var(--text-low); text-transform:uppercase; margin-top:6px; }
-
-.verified-chip {
-display:flex; align-items:center; gap:7px; margin-top:12px; padding:10px 12px; border-radius:10px;
-background: rgba(16,224,164,0.1); border:1px solid rgba(16,224,164,0.35);
-font-family:'JetBrains Mono',monospace; font-size:10.5px; color:#5eead4; font-weight:500; letter-spacing:0.3px;
-box-shadow: 0 0 16px rgba(16,224,164,0.15);
+.stApp{
+  color:var(--text);
+  background:
+    radial-gradient(900px 520px at 95% -10%,rgba(91,140,255,.13),transparent 65%),
+    radial-gradient(800px 500px at 0% 40%,rgba(155,122,255,.08),transparent 68%),
+    linear-gradient(180deg,#0b1220 0%,#0a111d 100%);
 }
 
-/* ---------- HEADER ---------- */
-
-.app-header {
-display:flex; align-items:center; justify-content:space-between;
-padding:6px 4px 20px 4px; margin-bottom:8px; border-bottom:1px solid var(--border);
+.main .block-container{
+  max-width:1340px;
+  padding:24px 34px 105px;
 }
-.app-header-left { display:flex; align-items:center; gap:14px; }
-.app-header-mark {
-width:44px; height:44px; border-radius:13px;
-background: linear-gradient(135deg, var(--blue), var(--violet) 50%, var(--magenta));
-display:flex; align-items:center; justify-content:center;
-font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:19px; color:#fff;
-box-shadow: 0 0 24px rgba(139,92,246,0.5);
+
+#MainMenu,footer{visibility:hidden}
+
+header[data-testid="stHeader"]{
+  background:rgba(11,18,32,.88);
 }
-.app-header-title { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; color:var(--text-hi); line-height:1.2; }
-.app-header-subtitle { font-family:'Inter',sans-serif; font-size:12.5px; color:var(--text-mid); margin-top:2px; }
 
-.ticker {
-display:flex; align-items:center; gap:8px; padding:8px 15px; border-radius:100px;
-border:1px solid rgba(16,224,164,0.4); background: rgba(16,224,164,0.09);
-font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.4px; color:#5eead4; font-weight:500;
-box-shadow: 0 0 20px rgba(16,224,164,0.18);
+button:focus-visible{
+  outline:2px solid var(--blue)!important;
+  outline-offset:2px;
 }
-.ticker-dot { width:7px; height:7px; border-radius:50%; background:var(--emerald); box-shadow:0 0 0 4px rgba(16,224,164,0.22); animation: blink 2s ease-in-out infinite; }
 
-/* ---------- HERO ---------- */
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
 
-.hero-wrap { position:relative; text-align:center; padding:44px 10px 6px 10px; }
-.ring { position:relative; width:68px; height:68px; margin:0 auto 20px auto; }
-.ring::before {
-content:""; position:absolute; inset:-6px; border-radius:50%;
-background: conic-gradient(from 0deg, var(--blue), var(--violet), var(--magenta), var(--amber), var(--emerald), var(--blue));
-animation: spin 6s linear infinite; opacity: 0.85;
+section[data-testid="stSidebar"]{
+  background:linear-gradient(180deg,#08111f 0%,#0b1424 100%);
+  border-right:1px solid #1b2940;
 }
-.ring-core {
-position:absolute; inset:0; border-radius:50%; background: var(--void);
-display:flex; align-items:center; justify-content:center; font-size:26px;
+
+section[data-testid="stSidebar"] .block-container{
+  padding:24px 17px 24px;
 }
-.hero-title {
-font-family:'Space Grotesk',sans-serif; font-size:32px; font-weight:700; margin-bottom:10px; line-height:1.2;
-background: linear-gradient(90deg, #fff 20%, var(--cyan) 50%, var(--violet) 80%);
--webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+
+.sb-brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
 }
-.hero-subtitle { font-family:'Inter',sans-serif; font-size:14.5px; color:var(--text-mid); max-width:520px; margin:0 auto 34px auto; line-height:1.65; }
 
-/* ---------- QUICK CARDS ---------- */
-
-.qcard {
-position:relative; border-radius:16px; border:1px solid var(--border); background: var(--glass);
-backdrop-filter: blur(14px); padding:20px 17px 18px 17px; height:100%; overflow:hidden;
-transition: all .2s cubic-bezier(.2,.8,.3,1.2);
+.sb-brand-mark{
+  width:38px;
+  height:38px;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#4f7cff,#805cff);
+  color:#fff;
+  font:700 15px 'Space Grotesk';
+  box-shadow:0 9px 24px rgba(79,124,255,.25);
 }
-.qcard:hover { transform: translateY(-5px) scale(1.015); background: var(--glass-hi); }
-.qcard::after { content:""; position:absolute; top:0; left:0; right:0; height:3px; }
-.qc-blue::after { background: linear-gradient(90deg,var(--blue),#60a5fa); }
-.qc-blue:hover { border-color: rgba(59,130,246,0.6); box-shadow: 0 14px 34px -10px rgba(59,130,246,0.4); }
-.qc-magenta::after { background: linear-gradient(90deg,var(--magenta),#f9a8d4); }
-.qc-magenta:hover { border-color: rgba(236,72,153,0.6); box-shadow: 0 14px 34px -10px rgba(236,72,153,0.4); }
-.qc-violet::after { background: linear-gradient(90deg,var(--violet),#c4b5fd); }
-.qc-violet:hover { border-color: rgba(139,92,246,0.6); box-shadow: 0 14px 34px -10px rgba(139,92,246,0.4); }
-.qc-emerald::after { background: linear-gradient(90deg,var(--emerald),#6ee7b7); }
-.qc-emerald:hover { border-color: rgba(16,224,164,0.6); box-shadow: 0 14px 34px -10px rgba(16,224,164,0.4); }
 
-.qcard-icon {
-width:38px; height:38px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:17px; margin-bottom:13px;
+.sb-brand-name{
+  font:600 14px 'Space Grotesk';
+  color:#fff!important;
 }
-.qi-blue { background: linear-gradient(135deg, rgba(59,130,246,0.35), rgba(59,130,246,0.1)); box-shadow: 0 0 16px rgba(59,130,246,0.3); }
-.qi-magenta { background: linear-gradient(135deg, rgba(236,72,153,0.35), rgba(236,72,153,0.1)); box-shadow: 0 0 16px rgba(236,72,153,0.3); }
-.qi-violet { background: linear-gradient(135deg, rgba(139,92,246,0.35), rgba(139,92,246,0.1)); box-shadow: 0 0 16px rgba(139,92,246,0.3); }
-.qi-emerald { background: linear-gradient(135deg, rgba(16,224,164,0.35), rgba(16,224,164,0.1)); box-shadow: 0 0 16px rgba(16,224,164,0.3); }
 
-.qcard-title { font-family:'Space Grotesk',sans-serif; font-size:15px; font-weight:600; color:var(--text-hi); margin-bottom:4px; }
-.qcard-text { font-family:'Inter',sans-serif; font-size:12px; color:var(--text-mid); line-height:1.5; }
-
-/* ---------- SUGGESTED QUESTIONS ---------- */
-
-.suggest-label { margin-top:36px; }
-
-div[data-testid="column"] .stButton button {
-border-radius:14px; border:1px solid var(--border); background: var(--glass);
-color:#d7dce3; font-family:'Inter',sans-serif; font-size:13.5px; font-weight:500;
-text-align:left; justify-content:flex-start; padding:14px 16px; min-height:48px;
-white-space:normal; line-height:1.4;
-transition: all .18s cubic-bezier(.2,.8,.3,1.2);
+.sb-brand-sub{
+  margin:7px 0 22px 49px;
+  color:#70809b!important;
+  font:500 7.5px 'JetBrains Mono';
+  letter-spacing:1.45px;
+  text-transform:uppercase;
 }
-div[data-testid="column"] .stButton button:hover { transform: translateY(-3px) scale(1.015); background: var(--glass-hi); color:var(--text-hi); }
-div[data-testid="column"] .stButton button:active { transform: scale(0.98); }
 
-.st-key-suggestion_0 button { border-left:3px solid var(--blue) !important; }
-.st-key-suggestion_0 button:hover { box-shadow: 0 10px 26px -8px rgba(59,130,246,0.5); border-color: var(--blue) !important; }
-.st-key-suggestion_1 button { border-left:3px solid var(--magenta) !important; }
-.st-key-suggestion_1 button:hover { box-shadow: 0 10px 26px -8px rgba(236,72,153,0.5); border-color: var(--magenta) !important; }
-.st-key-suggestion_2 button { border-left:3px solid var(--amber) !important; }
-.st-key-suggestion_2 button:hover { box-shadow: 0 10px 26px -8px rgba(245,178,60,0.45); border-color: var(--amber) !important; }
-.st-key-suggestion_3 button { border-left:3px solid var(--emerald) !important; }
-.st-key-suggestion_3 button:hover { box-shadow: 0 10px 26px -8px rgba(16,224,164,0.45); border-color: var(--emerald) !important; }
-
-/* ---------- CHAT ---------- */
-
-div[data-testid="stChatMessage"] {
-border-radius:16px; border:1px solid var(--border); background: var(--glass); backdrop-filter: blur(10px); padding:4px 6px;
+.sb-rule{
+  height:1px;
+  border:0;
+  background:#233149;
+  margin:18px 0;
 }
-div[data-testid="stChatMessageAvatarUser"] { background: linear-gradient(135deg, var(--cyan), var(--blue)) !important; }
-div[data-testid="stChatMessageAvatarAssistant"] {
-background: linear-gradient(135deg, var(--blue), var(--violet), var(--magenta)) !important;
-box-shadow: 0 0 14px rgba(139,92,246,0.5);
+
+.sb-label{
+  color:#71829e!important;
+  font:600 8px 'JetBrains Mono';
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin:17px 0 8px 3px;
 }
-div[data-testid="stChatInput"] textarea { font-family:'Inter',sans-serif; font-size:14px; }
-div[data-testid="stChatInput"] { border-radius:16px; border:1px solid var(--border-hi); background: var(--glass); }
 
-/* ---------- FOOTER ---------- */
+section[data-testid="stSidebar"] .stButton button{
+  width:100%;
+  min-height:39px;
+  border:1px solid transparent;
+  border-radius:9px;
+  background:transparent;
+  color:#b9c5d8!important;
+  font-size:11.5px;
+  font-weight:500;
+  text-align:left;
+  justify-content:flex-start;
+  padding-left:11px;
+  transition:.16s ease;
+}
 
-.footer-text {
-text-align:center; color:var(--text-low); font-family:'JetBrains Mono',monospace; font-size:10px;
-letter-spacing:0.8px; margin-top:32px; text-transform:uppercase;
+section[data-testid="stSidebar"] .stButton button:hover{
+  background:#142137;
+  color:#fff!important;
+}
+
+section[data-testid="stSidebar"] .stButton button[kind="primary"]{
+  background:linear-gradient(100deg,#3868f5,#7658ed);
+  color:#fff!important;
+  border:0;
+  box-shadow:0 9px 24px rgba(62,92,230,.25);
+}
+
+.sb-stat{
+  padding:15px 12px;
+  border-radius:12px;
+  margin-top:4px;
+  background:#111c2e;
+  border:1px solid #25344d;
+}
+
+.sb-stat-num{
+  font:700 27px 'Space Grotesk';
+  color:#fff!important;
+}
+
+.sb-stat-label{
+  margin-top:3px;
+  color:#71829e!important;
+  font:500 7.5px 'JetBrains Mono';
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.verified-chip{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-top:9px;
+  padding:8px 10px;
+  border:1px solid rgba(43,215,160,.28);
+  border-radius:9px;
+  background:#0d2a26;
+  color:#65e1bd!important;
+  font:500 8.5px 'JetBrains Mono';
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.app-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 0 17px;
+  border-bottom:1px solid var(--line);
+}
+
+.app-header-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.app-header-mark{
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#3c6ff6,#7659e9);
+  color:#fff!important;
+  font:700 17px 'Space Grotesk';
+  box-shadow:0 8px 20px rgba(64,94,236,.22);
+}
+
+.app-header-title{
+  font:700 19px 'Space Grotesk';
+  color:#f7f9fc!important;
+  letter-spacing:-.35px;
+}
+
+.app-header-subtitle{
+  font-size:10.5px;
+  color:#91a0b6!important;
+  margin-top:3px;
+}
+
+.ticker{
+  padding:7px 11px;
+  border:1px solid #29415c;
+  border-radius:8px;
+  background:#0e1a2c;
+  color:#b9c8dd!important;
+  font:600 8px 'JetBrains Mono';
+}
+
+.ticker-dot{
+  display:inline-block;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#2bd7a0;
+  margin-right:6px;
+  box-shadow:0 0 10px rgba(43,215,160,.5);
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  margin-top:18px;
+  padding:30px 31px;
+  border:1px solid #29436a;
+  border-radius:17px;
+  background:
+    radial-gradient(500px 220px at 90% 50%,rgba(91,140,255,.18),transparent 70%),
+    linear-gradient(115deg,#111e33 0%,#14243e 55%,#182848 100%);
+  box-shadow:0 18px 45px rgba(0,0,0,.22);
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  right:22px;
+  top:-75px;
+  width:230px;
+  height:230px;
+  border-radius:50%;
+  border:1px solid rgba(125,157,220,.16);
+  box-shadow:
+    0 0 0 30px rgba(91,140,255,.045),
+    0 0 0 62px rgba(91,140,255,.025);
+  pointer-events:none;
+}
+
+.hero-kicker{
+  font:600 8px 'JetBrains Mono';
+  letter-spacing:1.5px;
+  color:#8da6d0!important;
+  text-transform:uppercase;
+}
+
+.hero h1{
+  margin:9px 0 7px;
+  color:#f7faff!important;
+  font:700 30px/1.12 'Space Grotesk';
+  letter-spacing:-.8px;
+}
+
+.hero p{
+  margin:0;
+  max-width:700px;
+  color:#b7c5d9!important;
+  font-size:12px;
+  line-height:1.65;
+}
+
+.hero-status{
+  display:inline-flex;
+  margin-top:15px;
+  padding:7px 10px;
+  border-radius:7px;
+  background:#0e1b2e;
+  border:1px solid #2b4264;
+  color:#a9bad4!important;
+  font:500 7.5px 'JetBrains Mono';
+}
+
+/* =========================================================
+   KPI
+   ========================================================= */
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:11px;
+  margin-top:13px;
+}
+
+.kpi{
+  position:relative;
+  overflow:hidden;
+  padding:16px 17px;
+  background:#111a2a;
+  border:1px solid #26364f;
+  border-radius:14px;
+  box-shadow:0 8px 25px rgba(0,0,0,.15);
+}
+
+.kpi:after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  height:2px;
+  width:100%;
+  background:linear-gradient(90deg,#4f7cff,transparent);
+  opacity:.75;
+}
+
+.kpi-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.kpi-label{
+  font:600 8px 'JetBrains Mono';
+  letter-spacing:1.05px;
+  color:#91a0b6!important;
+  text-transform:uppercase;
+}
+
+.kpi-icon{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:13px;
+}
+
+.icon-blue{background:#172d59;color:#6f9aff!important}
+.icon-amber{background:#3d3019;color:#f5c969!important}
+.icon-violet{background:#2c2253;color:#a88aff!important}
+.icon-red{background:#40202a;color:#ff7b8d!important}
+
+.kpi-value{
+  margin-top:7px;
+  color:#f5f8fd!important;
+  font:700 24px 'Space Grotesk';
+  letter-spacing:-.4px;
+}
+
+.kpi-note{
+  font-size:9px;
+  color:#7888a1!important;
+  margin-top:2px;
+}
+
+/* =========================================================
+   ANALYSIS WORKSPACE
+   ========================================================= */
+
+.section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin:26px 0 11px;
+}
+
+.section-title{
+  color:#f2f6fc!important;
+  font:700 18px 'Space Grotesk';
+}
+
+.section-sub{
+  margin-top:3px;
+  color:#8291a8!important;
+  font-size:9.5px;
+}
+
+.section-pill{
+  padding:5px 8px;
+  border:1px solid #2a3a54;
+  border-radius:7px;
+  background:#111b2b;
+  color:#8295b2!important;
+  font:500 7.5px 'JetBrains Mono';
+}
+
+.module-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:11px;
+}
+
+.module{
+  display:grid;
+  grid-template-columns:43px 1fr 20px;
+  align-items:center;
+  gap:13px;
+  min-height:78px;
+  padding:14px 17px;
+  background:#111a2a;
+  border:1px solid #26364f;
+  border-radius:14px;
+  box-shadow:0 7px 23px rgba(0,0,0,.14);
+  transition:.18s ease;
+}
+
+.module:hover{
+  transform:translateY(-2px);
+  background:#152239;
+  border-color:#385071;
+  box-shadow:0 13px 30px rgba(0,0,0,.2);
+}
+
+.module-icon{
+  width:43px;
+  height:43px;
+  border-radius:11px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:16px;
+}
+
+.mi-blue{background:#172d59;color:#6f9aff!important}
+.mi-red{background:#40202a;color:#ff7b8d!important}
+.mi-violet{background:#2c2253;color:#a88aff!important}
+.mi-green{background:#10382f;color:#51dfb3!important}
+
+.module h3{
+  margin:0;
+  color:#f0f4fa!important;
+  font:600 13px 'Space Grotesk';
+}
+
+.module p{
+  margin:4px 0 0;
+  color:#8392aa!important;
+  font-size:9.5px;
+}
+
+.module-arrow{
+  color:#7286a4!important;
+  font-size:17px;
+}
+
+/* =========================================================
+   ASK PANEL + BUTTONS
+   ========================================================= */
+
+.ask-wrap{
+  margin-top:16px;
+  padding:18px;
+  background:#111a2a;
+  border:1px solid #26364f;
+  border-radius:15px;
+  box-shadow:0 7px 24px rgba(0,0,0,.14);
+}
+
+.ask-title{
+  color:#f1f5fb!important;
+  font:700 13px 'Space Grotesk';
+}
+
+.ask-sub{
+  margin:3px 0 11px;
+  color:#8291a8!important;
+  font-size:9.5px;
+}
+
+div[data-testid="column"] .stButton button{
+  width:100%;
+  min-height:42px;
+  padding:10px 13px;
+  border:1px solid #2b3a53;
+  border-radius:9px;
+  background:#172235!important;
+  color:#dbe4f1!important;
+  font-size:10.5px;
+  font-weight:500;
+  text-align:left;
+  justify-content:flex-start;
+  transition:.16s ease;
+}
+
+div[data-testid="column"] .stButton button *,
+div[data-testid="column"] .stButton button p,
+div[data-testid="column"] .stButton button span{
+  color:#dbe4f1!important;
+}
+
+div[data-testid="column"] .stButton button:hover{
+  background:#1c2b43!important;
+  color:#ffffff!important;
+  border-color:#425a7b;
+  transform:translateY(-1px);
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+}
+
+div[data-testid="column"] .stButton button:hover *,
+div[data-testid="column"] .stButton button:hover p,
+div[data-testid="column"] .stButton button:hover span{
+  color:#ffffff!important;
+}
+
+.st-key-suggestion_0 button{border-left:2px solid #5b8cff!important}
+.st-key-suggestion_1 button{border-left:2px solid #ff6b7f!important}
+.st-key-suggestion_2 button{border-left:2px solid #f4bd55!important}
+.st-key-suggestion_3 button{border-left:2px solid #2bd7a0!important}
+
+/* =========================================================
+   CHAT / STREAMLIT NATIVE COMPONENTS
+   ========================================================= */
+
+div[data-testid="stChatMessage"]{
+  background:#111a2a!important;
+  border:1px solid #26364f;
+  border-radius:13px;
+  padding:5px 8px;
+  margin:8px 0;
+  box-shadow:0 5px 18px rgba(0,0,0,.14);
+}
+
+div[data-testid="stChatMessage"],
+div[data-testid="stChatMessage"] p,
+div[data-testid="stChatMessage"] span,
+div[data-testid="stChatMessage"] div{
+  color:#dce5f1!important;
+}
+
+div[data-testid="stChatMessageAvatarUser"]{
+  background:#386bf4!important;
+}
+
+div[data-testid="stChatMessageAvatarAssistant"]{
+  background:#7658e8!important;
+}
+
+div[data-testid="stChatInput"]{
+  border:1px solid #33445f!important;
+  border-radius:14px;
+  background:#111a2a!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.22);
+}
+
+div[data-testid="stChatInput"] textarea{
+  font-size:12px;
+  color:#e6edf7!important;
+  -webkit-text-fill-color:#e6edf7!important;
+}
+
+div[data-testid="stChatInput"] textarea::placeholder{
+  color:#71829b!important;
+  opacity:1!important;
+}
+
+[data-testid="stMetric"]{
+  padding:14px;
+  border:1px solid #26364f;
+  border-radius:12px;
+  background:#111a2a!important;
+}
+
+[data-testid="stMetricLabel"]{
+  color:#91a0b6!important;
+}
+
+[data-testid="stMetricValue"]{
+  font-family:'Space Grotesk',sans-serif!important;
+  color:#f4f7fb!important;
+}
+
+[data-testid="stDataFrame"]{
+  background:#111a2a!important;
+}
+
+.footer-text{
+  text-align:center;
+  margin-top:27px;
+  color:#596b86!important;
+  font:500 7.5px 'JetBrains Mono';
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* Generic markdown text */
+.main .stMarkdown,
+.main .stMarkdown p,
+.main .stMarkdown span{
+  color:inherit;
+}
+
+/* Error/success/info blocks stay readable */
+[data-testid="stAlert"]{
+  color:#e8eef7!important;
+}
+
+@media(max-width:900px){
+  .main .block-container{padding:18px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:650px){
+  .kpi-grid,.module-grid{grid-template-columns:1fr}
 }
 </style>
 """, unsafe_allow_html=True)
@@ -434,99 +819,114 @@ AI Analyst Online
 
 if not st.session_state.messages:
 
+    # --------------------------------------------------------
+    # PREMIUM LIGHT EXECUTIVE DASHBOARD
+    # --------------------------------------------------------
+
+    total_customers = len(df)
+
+    def _sum_value(column):
+        try:
+            if column in df.columns:
+                return f"{df[column].sum():,.0f}"
+        except Exception:
+            pass
+        return "—"
+
+    revenue = _sum_value("total_revenue")
+    profit = _sum_value("total_profit")
+
+    churn = "—"
+    try:
+        if "actual_churn" in df.columns:
+            churn = f"{df['actual_churn'].mean()*100:.1f}%"
+        elif "churn_probability" in df.columns:
+            churn = f"{df['churn_probability'].mean()*100:.1f}%"
+    except Exception:
+        pass
+
+    st.markdown(f"""
+    <div class="hero">
+      <div class="hero-kicker">EXECUTIVE INSIGHTS</div>
+      <h1>Understand your customers. Drive growth.</h1>
+      <p>Explore customer behavior, predict risks, identify opportunities and make data-driven decisions with AI-powered analytics.</p>
+      <div class="hero-status">● PYTHON ANALYTICS VERIFIED &nbsp; · &nbsp; {total_customers:,} CUSTOMER RECORDS</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-top"><div class="kpi-label">Customers</div><div class="kpi-icon icon-blue">♙</div></div>
+        <div class="kpi-value">{total_customers:,}</div><div class="kpi-note">Records tracked</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top"><div class="kpi-label">Revenue</div><div class="kpi-icon icon-amber">◉</div></div>
+        <div class="kpi-value">{revenue}</div><div class="kpi-note">Customer-level total</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top"><div class="kpi-label">Profit</div><div class="kpi-icon icon-violet">▥</div></div>
+        <div class="kpi-value">{profit}</div><div class="kpi-note">Customer-level total</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-top"><div class="kpi-label">Churn indicator</div><div class="kpi-icon icon-red">◔</div></div>
+        <div class="kpi-value">{churn}</div><div class="kpi-note">Current dataset signal</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
     st.markdown("""
-<div class="hero-wrap">
-<div class="ring"><div class="ring-core">✨</div></div>
-<div class="hero-title">Your AI Business Analyst</div>
-<div class="hero-subtitle">Ask about churn, profit, retention or any customer by name — powered by verified Python analytics and explained in plain language.</div>
-</div>
-""", unsafe_allow_html=True)
+    <div class="section-head">
+      <div>
+        <div class="section-title">Analysis workspace</div>
+        <div class="section-sub">Focused modules for the questions that matter most.</div>
+      </div>
+      <div class="section-pill">7 INTELLIGENCE MODULES</div>
+    </div>
 
-    # --------------------------------------------------------
-    # QUICK ANALYSIS CARDS
-    # --------------------------------------------------------
+    <div class="module-grid">
+      <div class="module">
+        <div class="module-icon mi-blue">▥</div>
+        <div><h3>Business Overview</h3><p>Revenue, profit, churn and customer KPIs.</p></div>
+        <div class="module-arrow">›</div>
+      </div>
+      <div class="module">
+        <div class="module-icon mi-red">◉</div>
+        <div><h3>Risk Analysis</h3><p>Churn probability, risk segments and exposure.</p></div>
+        <div class="module-arrow">›</div>
+      </div>
+      <div class="module">
+        <div class="module-icon mi-violet">♙</div>
+        <div><h3>Customer 360</h3><p>Investigate an individual customer profile.</p></div>
+        <div class="module-arrow">›</div>
+      </div>
+      <div class="module">
+        <div class="module-icon mi-green">◎</div>
+        <div><h3>Retention Priorities</h3><p>Identify customers requiring attention.</p></div>
+        <div class="module-arrow">›</div>
+      </div>
+    </div>
 
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.markdown("""
-<div class="qcard qc-blue">
-<div class="qcard-icon qi-blue">📊</div>
-<div class="qcard-title">Business Overview</div>
-<div class="qcard-text">KPIs, churn and profitability</div>
-</div>
-""", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("""
-<div class="qcard qc-magenta">
-<div class="qcard-icon qi-magenta">🔴</div>
-<div class="qcard-title">Risk Analysis</div>
-<div class="qcard-text">Find customers at risk</div>
-</div>
-""", unsafe_allow_html=True)
-
-    with col3:
-        st.markdown("""
-<div class="qcard qc-violet">
-<div class="qcard-icon qi-violet">👤</div>
-<div class="qcard-title">Customer 360</div>
-<div class="qcard-text">Analyze any customer</div>
-</div>
-""", unsafe_allow_html=True)
-
-    with col4:
-        st.markdown("""
-<div class="qcard qc-emerald">
-<div class="qcard-icon qi-emerald">🎯</div>
-<div class="qcard-title">Retention</div>
-<div class="qcard-text">Prioritize customer actions</div>
-</div>
-""", unsafe_allow_html=True)
-
-    # --------------------------------------------------------
-    # SUGGESTED QUESTIONS
-    # --------------------------------------------------------
-
-    st.markdown(
-        '<div class="suggest-label sb-label">Try asking</div>',
-        unsafe_allow_html=True,
-    )
+    <div class="ask-wrap">
+      <div class="ask-title">Ask the intelligence layer</div>
+      <div class="ask-sub">Use a shortcut below, or type your own business question in the analyst input.</div>
+    """, unsafe_allow_html=True)
 
     sq_col1, sq_col2 = st.columns(2)
 
     with sq_col1:
-
-        if st.button(
-            "💬  Tell me everything about C04291",
-            key="suggestion_0",
-            use_container_width=True,
-        ):
+        if st.button("💬  Tell me everything about C04291", key="suggestion_0", use_container_width=True):
             queue_question("Tell me everything about C04291")
-
-        if st.button(
-            "💬  Which region has the highest profit?",
-            key="suggestion_2",
-            use_container_width=True,
-        ):
+        if st.button("💬  Which region has the highest profit?", key="suggestion_2", use_container_width=True):
             queue_question("Which region has the highest profit?")
 
     with sq_col2:
-
-        if st.button(
-            "💬  How many high-risk customers are there?",
-            key="suggestion_1",
-            use_container_width=True,
-        ):
+        if st.button("💬  How many high-risk customers are there?", key="suggestion_1", use_container_width=True):
             queue_question("How many high-risk customers are there?")
-
-        if st.button(
-            "💬  Compare Free and Premium customers.",
-            key="suggestion_3",
-            use_container_width=True,
-        ):
+        if st.button("💬  Compare Free and Premium customers.", key="suggestion_3", use_container_width=True):
             queue_question("Compare Free and Premium customers.")
 
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ============================================================
 # CHAT HISTORY
